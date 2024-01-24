@@ -1,7 +1,10 @@
 // ignore_for_file: avoid_print
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:world_time_app/services/world_time.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class Loading extends StatefulWidget {
   const Loading({super.key});
@@ -11,14 +14,23 @@ class Loading extends StatefulWidget {
 }
 
 class _LoadingState extends State<Loading> {
-  String showTime = 'loading ';
   Future<void> setupWorldtime() async {
+    /* Used a Completer to handle the navigation after the
+    asynchronous function is comleted */
+    Completer<void> completer = Completer<void>();
     WorldTime instance =
-        WorldTime(location: 'Berlin', flag: '', locationUrl: 'Africa/Lagos');
+        WorldTime(location: 'Lagos', flag: '', locationUrl: 'Africa/Lagos');
     await instance.getTime();
-    setState(() {
-      showTime = instance.time!;
+    completer.future.then((_) {
+      // used the argument property to pass values from  one route to another
+      Navigator.pushReplacementNamed(context, '/home', arguments: {
+        'location': instance.location,
+        'flag': instance.flag,
+        'time': instance.time,
+        'isDaytime': instance.isDaytime
+      });
     });
+    completer.complete();
   }
 
   @override
@@ -30,14 +42,11 @@ class _LoadingState extends State<Loading> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(50.0),
-          child: Text(
-            showTime,
-            style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-          ),
+      backgroundColor: Colors.blue[800],
+      body: const Center(
+        child: SpinKitRotatingCircle(
+          color: Colors.white,
+          size: 50.0,
         ),
       ),
     );
