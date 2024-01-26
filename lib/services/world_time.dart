@@ -7,7 +7,7 @@ class WorldTime {
   String? time; // timein that location
   String flag; // url to an asset flag icon
   String locationUrl; // location url for api endpoint
-  bool isDaytime = true;
+  bool isDaytime = true; // true or false if its daytime or not
 
   WorldTime(
       {required this.location, required this.flag, required this.locationUrl});

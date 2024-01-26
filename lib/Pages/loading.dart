@@ -22,7 +22,7 @@ class _LoadingState extends State<Loading> {
         WorldTime(location: 'Lagos', flag: '', locationUrl: 'Africa/Lagos');
     await instance.getTime();
     completer.future.then((_) {
-      // used the argument property to pass values from  one route to another
+      //used the argument property to pass values from  one route to another
       Navigator.pushReplacementNamed(context, '/home', arguments: {
         'location': instance.location,
         'flag': instance.flag,
